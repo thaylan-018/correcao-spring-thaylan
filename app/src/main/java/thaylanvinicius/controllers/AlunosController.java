@@ -32,12 +32,13 @@ public class AlunosController {
     }
 
     @RequestMapping(value = "insert", method = RequestMethod.POST)
-    public String saveInsert(@RequestParam("nome") String nome, @RequestParam("idade") int idade) {
+    public String saveInsert(@RequestParam("nome") String nome, @RequestParam("idade") int idade, @RequestParam("curso") String curso) {
         Aluno aluno = new Aluno();
         aluno.setNome(nome);
         aluno.setIdade(idade);
+        aluno.setCurso(curso);
         alunosRepo.save(aluno);
-        return "/alunos/list";
+        return "redirect:/alunos/list";
     }
 
     @RequestMapping("insert")
@@ -45,11 +46,26 @@ public class AlunosController {
         return "/alunos/insert";
     }
 
-    public String saveUpdate(@RequestParam("nome") String nome, @RequestParam("idade") int idade, @RequestParam("id") int id) {
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public String saveUpdate(@RequestParam("nome") String nome, @RequestParam("idade") int idade, @RequestParam("id") int id, @RequestParam ("curso") String curso) {
         Optional<Aluno> aluno = alunosRepo.findById(id);
         aluno.get().setNome(nome);
         aluno.get().setIdade(idade);
+        aluno.get().setCurso(curso);
         alunosRepo.save(aluno.get());
+        return "redirect:/alunos/list";
+    }
+
+    @RequestMapping("delete/{id}")
+    public String delete(Model model, @PathVariable int id) {
+        Optional <Aluno> aluno = alunosRepo.findById(id);
+        model.addAttribute("aluno", aluno.get());
+        return "/alunos/delete";
+    }
+
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    public String saveDelete(@RequestParam("id") int id) {
+        alunosRepo.deleteById(id);
         return "redirect:/alunos/list";
     }
 }

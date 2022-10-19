@@ -13,6 +13,7 @@ public class Aluno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nome;
+    private String curso;
     private int idade;
 
     public void setId(int id) {
@@ -37,5 +38,13 @@ public class Aluno {
 
     public int getIdade() {
         return idade;
+    }
+
+    public void setCurso(String curso) {
+        this.curso = curso;
+    }
+
+    public String getCurso() {
+        return curso;
     }
 }
